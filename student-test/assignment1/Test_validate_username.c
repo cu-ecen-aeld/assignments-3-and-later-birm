@@ -16,5 +16,5 @@ void test_validate_my_username()
 {
     const char *username1 = my_username();
     const char *username2 = malloc_username_from_conf_file();
-    TEST_ASSERT_TRUE_MESSAGE(username1, username2);
+    TEST_ASSERT_TRUE_MESSAGE(!strcmp(username1, username2), "Username mismatch");
 }
