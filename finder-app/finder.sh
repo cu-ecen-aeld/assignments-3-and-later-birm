@@ -11,5 +11,6 @@ then
 fi
 
 Y=$(find $1 -name "*$2*" -print | wc -l)
+Z=$(grep -hnr $2 $1 | wc -l)
 X=$(ls -1 $1 | wc -l)
-echo "The number of files are ${X} and the number of matching lines are ${Y}" 
+echo "The number of files are ${X} and the number of matching lines are ${Z}" 
