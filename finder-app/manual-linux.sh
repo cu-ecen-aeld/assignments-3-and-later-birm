@@ -64,23 +64,22 @@ then
 git clone git://busybox.net/busybox.git
     cd busybox
     git checkout ${BUSYBOX_VERSION}
-
+		make distclean
+		make defconfig
+		make ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE}
 else
     cd busybox
 fi
 
-make distclean
-make defconfig
-make ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE}
-make ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE} install
-
 # TODO: Make and install busybox
+make CONFIG_PREFIX=${OUTDIR}/rootfs ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE} install
 
 echo "Library dependencies"
 ${CROSS_COMPILE}readelf -a bin/busybox | grep "program interpreter"
 ${CROSS_COMPILE}readelf -a bin/busybox | grep "Shared library"
 
 # TODO: Add library dependencies to rootfs
+SYSROOT=$(${CROSS_COMPILE}gcc -print-sysroot)
 sudo cp ${SYSROOT}/lib/ld-linux-aarch64.* ${OUTDIR}/rootfs/lib
 sudo cp ${SYSROOT}/lib64/libm.so.* ${OUTDIR}/rootfs/lib64
 sudo cp ${SYSROOT}/lib64/libresolv.so.* ${OUTDIR}/rootfs/lib64
